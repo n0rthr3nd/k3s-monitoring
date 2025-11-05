@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: k3s-admin
+  namespace: k3s-admin
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+    - host: k3s-admin.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: k3s-admin
+                port:
+                  number: 80
