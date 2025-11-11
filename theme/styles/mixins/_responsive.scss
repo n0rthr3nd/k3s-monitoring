@@ -1,0 +1,149 @@
+// Responsive Design Mixins
+@import '../base/colors';
+
+// ============================================
+// Breakpoint Mixins
+// ============================================
+
+@mixin sm {
+  @media (min-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (min-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (min-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (min-width: $breakpoint-xl) {
+    @content;
+  }
+}
+
+@mixin xxl {
+  @media (min-width: $breakpoint-2xl) {
+    @content;
+  }
+}
+
+// Max-width breakpoints
+@mixin sm-down {
+  @media (max-width: $breakpoint-sm - 1) {
+    @content;
+  }
+}
+
+@mixin md-down {
+  @media (max-width: $breakpoint-md - 1) {
+    @content;
+  }
+}
+
+@mixin lg-down {
+  @media (max-width: $breakpoint-lg - 1) {
+    @content;
+  }
+}
+
+@mixin xl-down {
+  @media (max-width: $breakpoint-xl - 1) {
+    @content;
+  }
+}
+
+// Between breakpoints
+@mixin between($min, $max) {
+  @media (min-width: $min) and (max-width: $max - 1) {
+    @content;
+  }
+}
+
+// Mobile-first responsive font sizes
+@mixin responsive-font($mobile, $desktop) {
+  font-size: $mobile;
+
+  @include md {
+    font-size: calc(#{$mobile} + (#{$desktop} - #{$mobile}) * ((100vw - #{$breakpoint-sm}) / (#{$breakpoint-xl} - #{$breakpoint-sm})));
+  }
+
+  @include xl {
+    font-size: $desktop;
+  }
+}
+
+// Responsive spacing
+@mixin responsive-spacing($property, $mobile, $desktop) {
+  #{$property}: $mobile;
+
+  @include md {
+    #{$property}: calc(#{$mobile} + (#{$desktop} - #{$mobile}) * ((100vw - #{$breakpoint-sm}) / (#{$breakpoint-xl} - #{$breakpoint-sm})));
+  }
+
+  @include xl {
+    #{$property}: $desktop;
+  }
+}
+
+// Hide on specific breakpoints
+@mixin hide-sm {
+  @include sm-down {
+    display: none !important;
+  }
+}
+
+@mixin hide-md {
+  @include between($breakpoint-sm, $breakpoint-md) {
+    display: none !important;
+  }
+}
+
+@mixin hide-lg {
+  @include between($breakpoint-md, $breakpoint-lg) {
+    display: none !important;
+  }
+}
+
+// Show only on specific breakpoints
+@mixin show-sm-only {
+  display: none !important;
+
+  @include sm-down {
+    display: block !important;
+  }
+}
+
+@mixin show-md-only {
+  display: none !important;
+
+  @include between($breakpoint-sm, $breakpoint-md) {
+    display: block !important;
+  }
+}
+
+// Container
+@mixin container($max-width: $breakpoint-xl, $padding: $spacing-md) {
+  width: 100%;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding-left: $padding;
+  padding-right: $padding;
+
+  @include md {
+    padding-left: $spacing-lg;
+    padding-right: $spacing-lg;
+  }
+
+  @include lg {
+    padding-left: $spacing-xl;
+    padding-right: $spacing-xl;
+  }
+}

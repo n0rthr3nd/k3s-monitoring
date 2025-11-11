@@ -1,0 +1,234 @@
+// Angular Material Theme Configuration
+@use '@angular/material' as mat;
+@use 'palettes' as palettes;
+
+// Include the common styles for Angular Material
+@include mat.core();
+
+// ============================================
+// Define the K3S Admin Theme
+// ============================================
+
+// Create the palettes
+$k3s-primary: mat.define-palette(palettes.$k3s-primary-palette, 500, 300, 700);
+$k3s-accent: mat.define-palette(palettes.$k3s-accent-palette, 500, 300, 700);
+$k3s-warn: mat.define-palette(palettes.$k3s-warn-palette, 500, 300, 700);
+
+// Create the light theme
+$k3s-light-theme: mat.define-light-theme((
+  color: (
+    primary: $k3s-primary,
+    accent: $k3s-accent,
+    warn: $k3s-warn,
+  ),
+  typography: mat.define-typography-config(
+    $font-family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+  ),
+  density: 0,
+));
+
+// Create the dark theme
+$k3s-dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $k3s-primary,
+    accent: $k3s-accent,
+    warn: $k3s-warn,
+  ),
+  typography: mat.define-typography-config(
+    $font-family: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+  ),
+  density: 0,
+));
+
+// ============================================
+// Apply the Theme
+// ============================================
+
+// Include theme styles for core and each component used in your app
+@include mat.all-component-themes($k3s-light-theme);
+
+// Dark theme class
+.dark-theme {
+  @include mat.all-component-colors($k3s-dark-theme);
+}
+
+// ============================================
+// Custom Material Overrides
+// ============================================
+
+@import '../base/colors';
+
+// Buttons with gradients
+.mat-mdc-raised-button {
+  &.mat-primary {
+    background: $gradient-primary !important;
+    color: white !important;
+
+    &:hover:not(:disabled) {
+      box-shadow: $shadow-primary !important;
+    }
+  }
+
+  &.mat-accent {
+    background: $gradient-success !important;
+    color: white !important;
+
+    &:hover:not(:disabled) {
+      box-shadow: $shadow-success !important;
+    }
+  }
+
+  &.mat-warn {
+    background: $gradient-danger !important;
+    color: white !important;
+
+    &:hover:not(:disabled) {
+      box-shadow: $shadow-danger !important;
+    }
+  }
+}
+
+// Card enhancements
+.mat-mdc-card {
+  border-radius: $radius-2xl !important;
+  box-shadow: $shadow-md !important;
+  transition: $transition-all !important;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-xl !important;
+  }
+}
+
+// Chip (Badge) styles
+.mat-mdc-chip {
+  border-radius: $radius-full !important;
+
+  &.mat-primary {
+    background: $gradient-primary !important;
+    color: white !important;
+  }
+
+  &.mat-accent {
+    background: $gradient-success !important;
+    color: white !important;
+  }
+
+  &.mat-warn {
+    background: $gradient-danger !important;
+    color: white !important;
+  }
+}
+
+// Form fields
+.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    border-radius: $radius-lg !important;
+  }
+
+  &.mat-focused {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $primary-start !important;
+    }
+  }
+}
+
+// Toolbar
+.mat-toolbar {
+  &.mat-primary {
+    background: $gradient-primary !important;
+  }
+}
+
+// Tabs
+.mat-mdc-tab-group {
+  .mat-mdc-tab.mdc-tab--active {
+    .mdc-tab__text-label {
+      background: $gradient-primary-text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+}
+
+// Progress bar
+.mat-mdc-progress-bar {
+  &.mat-primary {
+    .mdc-linear-progress__bar-inner {
+      background: $gradient-primary !important;
+    }
+  }
+}
+
+// Slider
+.mat-mdc-slider {
+  &.mat-primary {
+    --mdc-slider-handle-color: #{$primary-start};
+    --mdc-slider-focus-handle-color: #{$primary-start};
+    --mdc-slider-hover-handle-color: #{$primary-start};
+    --mdc-slider-active-track-color: #{$primary-start};
+  }
+}
+
+// Checkbox & Radio
+.mat-mdc-checkbox.mat-primary,
+.mat-mdc-radio-button.mat-primary {
+  --mdc-checkbox-selected-checkmark-color: white;
+  --mdc-checkbox-selected-icon-color: #{$primary-start};
+  --mdc-radio-selected-icon-color: #{$primary-start};
+}
+
+// Dialog
+.mat-mdc-dialog-container {
+  border-radius: $radius-2xl !important;
+  box-shadow: $shadow-2xl !important;
+}
+
+// Snackbar
+.mat-mdc-snack-bar-container {
+  border-radius: $radius-xl !important;
+
+  &.success-snackbar {
+    background: $gradient-success !important;
+    color: white !important;
+  }
+
+  &.error-snackbar {
+    background: $gradient-danger !important;
+    color: white !important;
+  }
+
+  &.info-snackbar {
+    background: $gradient-info !important;
+    color: white !important;
+  }
+
+  &.warning-snackbar {
+    background: $gradient-warning !important;
+    color: $gray-800 !important;
+  }
+}
+
+// Menu & Select
+.mat-mdc-menu-panel {
+  border-radius: $radius-xl !important;
+  box-shadow: $shadow-xl !important;
+}
+
+.mat-mdc-select-panel {
+  border-radius: $radius-xl !important;
+  box-shadow: $shadow-xl !important;
+}
+
+// Tooltip
+.mat-mdc-tooltip {
+  background: rgba($gray-800, 0.95) !important;
+  border-radius: $radius-md !important;
+}
+
+// Ripple effect
+.mat-ripple-element {
+  background-color: rgba($primary-start, 0.1) !important;
+}

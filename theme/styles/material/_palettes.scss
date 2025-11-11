@@ -1,0 +1,187 @@
+// Angular Material Custom Palettes
+// Based on K3S Admin Theme Colors
+
+// ============================================
+// Primary Palette (Purple/Blue Gradient)
+// ============================================
+
+$k3s-primary-palette: (
+  50: #f0f2fe,
+  100: #dde1fc,
+  200: #c4cbf9,
+  300: #9ea9f5,
+  400: #7d8aef,
+  500: #667eea,  // Main color
+  600: #5a6fdc,
+  700: #4e5cc3,
+  800: #444d9d,
+  900: #3c4379,
+  A100: #dde1fc,
+  A200: #9ea9f5,
+  A400: #667eea,
+  A700: #4e5cc3,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: white,
+    A700: white,
+  )
+);
+
+// ============================================
+// Accent Palette (Success Green/Cyan)
+// ============================================
+
+$k3s-accent-palette: (
+  50: #e6fef3,
+  100: #c0fde1,
+  200: #96fbcd,
+  300: #6cf9b9,
+  400: #4df8aa,
+  500: #43e97b,  // Main color
+  600: #3cd972,
+  700: #33c867,
+  800: #2ab85d,
+  900: #1a9f4a,
+  A100: #c0fde1,
+  A200: #6cf9b9,
+  A400: #43e97b,
+  A700: #33c867,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: white,
+    A700: white,
+  )
+);
+
+// ============================================
+// Warn Palette (Danger Red/Pink)
+// ============================================
+
+$k3s-warn-palette: (
+  50: #ffebee,
+  100: #ffcdd5,
+  200: #ffa5b3,
+  300: #ff7d91,
+  400: #ff5f77,
+  500: #f5576c,  // Main color
+  600: #ed4f64,
+  700: #e34659,
+  800: #da3d4f,
+  900: #cb2e3d,
+  A100: #ffcdd5,
+  A200: #ff7d91,
+  A400: #f5576c,
+  A700: #e34659,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: white,
+    A700: white,
+  )
+);
+
+// ============================================
+// Info Palette (Info Blue/Cyan)
+// ============================================
+
+$k3s-info-palette: (
+  50: #e8f7ff,
+  100: #c5ebff,
+  200: #9fddff,
+  300: #78cfff,
+  400: #5bc5ff,
+  500: #4facfe,  // Main color
+  600: #489df1,
+  700: #3f8be1,
+  800: #367ad1,
+  900: #265bb9,
+  A100: #c5ebff,
+  A200: #78cfff,
+  A400: #4facfe,
+  A700: #3f8be1,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: white,
+    A700: white,
+  )
+);
+
+// ============================================
+// Warning Palette (Warning Pink/Yellow)
+// ============================================
+
+$k3s-warning-palette: (
+  50: #fff8e5,
+  100: #ffeebd,
+  200: #ffe391,
+  300: #ffd865,
+  400: #ffcf44,
+  500: #fee140,  // Main color (yellow end)
+  600: #fac63a,
+  700: #f6a732,
+  800: #f28a2a,
+  900: #ec5c1c,
+  A100: #ffeebd,
+  A200: #ffd865,
+  A400: #fee140,
+  A700: #f6a732,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: rgba(black, 0.87),
+    600: rgba(black, 0.87),
+    700: rgba(black, 0.87),
+    800: rgba(black, 0.87),
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(black, 0.87),
+    A700: rgba(black, 0.87),
+  )
+);

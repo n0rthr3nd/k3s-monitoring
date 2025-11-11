@@ -1,0 +1,117 @@
+// Gradient Mixins
+@import '../base/colors';
+
+// Apply gradient background
+@mixin gradient-bg($gradient) {
+  background: $gradient;
+}
+
+// Gradient text
+@mixin gradient-text($gradient) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Primary gradient
+@mixin gradient-primary {
+  @include gradient-bg($gradient-primary);
+}
+
+@mixin gradient-primary-text {
+  @include gradient-text($gradient-primary);
+}
+
+// Success gradient
+@mixin gradient-success {
+  @include gradient-bg($gradient-success);
+}
+
+@mixin gradient-success-text {
+  @include gradient-text($gradient-success);
+}
+
+// Warning gradient
+@mixin gradient-warning {
+  @include gradient-bg($gradient-warning);
+}
+
+@mixin gradient-warning-text {
+  @include gradient-text($gradient-warning);
+}
+
+// Danger gradient
+@mixin gradient-danger {
+  @include gradient-bg($gradient-danger);
+}
+
+@mixin gradient-danger-text {
+  @include gradient-text($gradient-danger);
+}
+
+// Info gradient
+@mixin gradient-info {
+  @include gradient-bg($gradient-info);
+}
+
+@mixin gradient-info-text {
+  @include gradient-text($gradient-info);
+}
+
+// Gradient border
+@mixin gradient-border($gradient, $width: 2px, $radius: $radius-lg) {
+  position: relative;
+  border-radius: $radius;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: $radius;
+    padding: $width;
+    background: $gradient;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+}
+
+// Gradient overlay
+@mixin gradient-overlay($gradient, $opacity: 0.9) {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: $gradient;
+    opacity: $opacity;
+    pointer-events: none;
+  }
+}
+
+// Animated gradient background
+@mixin animated-gradient($gradient, $duration: 3s) {
+  background: $gradient;
+  background-size: 200% 200%;
+  animation: gradientAnimation $duration ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

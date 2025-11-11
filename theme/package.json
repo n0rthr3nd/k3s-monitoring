@@ -1,0 +1,29 @@
+{
+  "name": "@k3s-admin/theme",
+  "version": "1.0.0",
+  "description": "Modern gradient-based theme for Angular applications with Material Design support",
+  "main": "styles/k3s-admin-theme.scss",
+  "keywords": [
+    "angular",
+    "material",
+    "theme",
+    "scss",
+    "gradient",
+    "k3s",
+    "design-system"
+  ],
+  "author": "K3S Admin",
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/material": ">=17.0.0",
+    "@angular/cdk": ">=17.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-repo/k3s-admin-theme"
+  },
+  "files": [
+    "styles/**/*",
+    "README.md"
+  ]
+}

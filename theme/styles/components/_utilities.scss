@@ -1,0 +1,631 @@
+// Utility Classes
+@import '../base/colors';
+@import '../mixins/components';
+@import '../mixins/gradients';
+
+// ============================================
+// Gradient Classes
+// ============================================
+
+.gradient-primary {
+  @include gradient-primary;
+}
+
+.gradient-success {
+  @include gradient-success;
+}
+
+.gradient-warning {
+  @include gradient-warning;
+}
+
+.gradient-danger {
+  @include gradient-danger;
+}
+
+.gradient-info {
+  @include gradient-info;
+}
+
+// Gradient text
+.gradient-primary-text {
+  @include gradient-primary-text;
+}
+
+.gradient-success-text {
+  @include gradient-success-text;
+}
+
+.gradient-warning-text {
+  @include gradient-warning-text;
+}
+
+.gradient-danger-text {
+  @include gradient-danger-text;
+}
+
+.gradient-info-text {
+  @include gradient-info-text;
+}
+
+// ============================================
+// Button Classes
+// ============================================
+
+.btn {
+  @include button-base;
+}
+
+.btn-primary {
+  @include button-primary;
+}
+
+.btn-success {
+  @include button-success;
+}
+
+.btn-warning {
+  @include button-warning;
+}
+
+.btn-danger {
+  @include button-danger;
+}
+
+.btn-info {
+  @include button-info;
+}
+
+.btn-outline-primary {
+  @include button-outline($primary-start);
+}
+
+.btn-outline-success {
+  @include button-outline($success-start);
+}
+
+.btn-outline-danger {
+  @include button-outline($danger-start);
+}
+
+// Button sizes
+.btn-sm {
+  padding: $spacing-xs $spacing-md;
+  font-size: $font-size-xs;
+}
+
+.btn-lg {
+  padding: $spacing-md $spacing-xl;
+  font-size: $font-size-lg;
+}
+
+// ============================================
+// Card Classes
+// ============================================
+
+.card {
+  @include card;
+}
+
+.card-header {
+  @include card-header;
+}
+
+.card-body {
+  @include card-body;
+}
+
+.card-no-hover {
+  @include card;
+
+  &:hover {
+    transform: none;
+    box-shadow: $shadow-md;
+  }
+}
+
+// ============================================
+// Badge Classes
+// ============================================
+
+.badge {
+  @include badge($gradient-primary);
+}
+
+.badge-primary {
+  @include badge($gradient-primary);
+}
+
+.badge-success {
+  @include badge-success;
+}
+
+.badge-warning {
+  @include badge($gradient-warning, $gray-800);
+}
+
+.badge-danger {
+  @include badge($gradient-danger);
+}
+
+.badge-info {
+  @include badge($gradient-info);
+}
+
+.badge-light {
+  background: $gray-200;
+  color: $gray-800;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+}
+
+// ============================================
+// Shadow Classes
+// ============================================
+
+.shadow-sm {
+  box-shadow: $shadow-sm;
+}
+
+.shadow-md {
+  box-shadow: $shadow-md;
+}
+
+.shadow-lg {
+  box-shadow: $shadow-lg;
+}
+
+.shadow-xl {
+  box-shadow: $shadow-xl;
+}
+
+.shadow-2xl {
+  box-shadow: $shadow-2xl;
+}
+
+.shadow-primary {
+  box-shadow: $shadow-primary;
+}
+
+.shadow-success {
+  box-shadow: $shadow-success;
+}
+
+.shadow-none {
+  box-shadow: none !important;
+}
+
+// ============================================
+// Text Colors
+// ============================================
+
+.text-primary {
+  color: $text-primary;
+}
+
+.text-secondary {
+  color: $text-secondary;
+}
+
+.text-muted {
+  color: $text-muted;
+}
+
+.text-white {
+  color: $white;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+// ============================================
+// Font Weights
+// ============================================
+
+.font-normal {
+  font-weight: $font-weight-normal;
+}
+
+.font-medium {
+  font-weight: $font-weight-medium;
+}
+
+.font-semibold {
+  font-weight: $font-weight-semibold;
+}
+
+.font-bold {
+  font-weight: $font-weight-bold;
+}
+
+// ============================================
+// Font Sizes
+// ============================================
+
+.text-xs {
+  font-size: $font-size-xs;
+}
+
+.text-sm {
+  font-size: $font-size-sm;
+}
+
+.text-base {
+  font-size: $font-size-base;
+}
+
+.text-lg {
+  font-size: $font-size-lg;
+}
+
+.text-xl {
+  font-size: $font-size-xl;
+}
+
+.text-2xl {
+  font-size: $font-size-2xl;
+}
+
+.text-3xl {
+  font-size: $font-size-3xl;
+}
+
+.text-4xl {
+  font-size: $font-size-4xl;
+}
+
+// ============================================
+// Spacing Utilities
+// ============================================
+
+// Margin
+@each $size, $value in (xs: $spacing-xs, sm: $spacing-sm, md: $spacing-md, lg: $spacing-lg, xl: $spacing-xl, 2xl: $spacing-2xl) {
+  .m-#{$size} {
+    margin: $value;
+  }
+
+  .mt-#{$size} {
+    margin-top: $value;
+  }
+
+  .mb-#{$size} {
+    margin-bottom: $value;
+  }
+
+  .ml-#{$size} {
+    margin-left: $value;
+  }
+
+  .mr-#{$size} {
+    margin-right: $value;
+  }
+
+  .mx-#{$size} {
+    margin-left: $value;
+    margin-right: $value;
+  }
+
+  .my-#{$size} {
+    margin-top: $value;
+    margin-bottom: $value;
+  }
+}
+
+// Padding
+@each $size, $value in (xs: $spacing-xs, sm: $spacing-sm, md: $spacing-md, lg: $spacing-lg, xl: $spacing-xl, 2xl: $spacing-2xl) {
+  .p-#{$size} {
+    padding: $value;
+  }
+
+  .pt-#{$size} {
+    padding-top: $value;
+  }
+
+  .pb-#{$size} {
+    padding-bottom: $value;
+  }
+
+  .pl-#{$size} {
+    padding-left: $value;
+  }
+
+  .pr-#{$size} {
+    padding-right: $value;
+  }
+
+  .px-#{$size} {
+    padding-left: $value;
+    padding-right: $value;
+  }
+
+  .py-#{$size} {
+    padding-top: $value;
+    padding-bottom: $value;
+  }
+}
+
+// ============================================
+// Background Colors
+// ============================================
+
+.bg-primary {
+  background-color: $bg-primary;
+}
+
+.bg-secondary {
+  background-color: $bg-secondary;
+}
+
+.bg-tertiary {
+  background-color: $bg-tertiary;
+}
+
+.bg-dark {
+  background-color: $bg-dark;
+  color: $white;
+}
+
+.bg-gradient-light {
+  background: $gradient-bg-light;
+}
+
+.bg-gradient-purple {
+  background: $gradient-bg-purple;
+  color: $white;
+}
+
+// ============================================
+// Border Radius
+// ============================================
+
+.rounded-sm {
+  border-radius: $radius-sm;
+}
+
+.rounded-md {
+  border-radius: $radius-md;
+}
+
+.rounded-lg {
+  border-radius: $radius-lg;
+}
+
+.rounded-xl {
+  border-radius: $radius-xl;
+}
+
+.rounded-2xl {
+  border-radius: $radius-2xl;
+}
+
+.rounded-full {
+  border-radius: $radius-full;
+}
+
+// ============================================
+// Flexbox Utilities
+// ============================================
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  @include flex-center;
+}
+
+.flex-between {
+  @include flex-between;
+}
+
+.flex-column {
+  @include flex-column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.gap-xs {
+  gap: $spacing-xs;
+}
+
+.gap-sm {
+  gap: $spacing-sm;
+}
+
+.gap-md {
+  gap: $spacing-md;
+}
+
+.gap-lg {
+  gap: $spacing-lg;
+}
+
+.gap-xl {
+  gap: $spacing-xl;
+}
+
+// ============================================
+// Grid Utilities
+// ============================================
+
+.grid {
+  display: grid;
+}
+
+.grid-auto-fit {
+  @include grid-auto-fit;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+// ============================================
+// Glassmorphism
+// ============================================
+
+.glass {
+  @include glass;
+}
+
+.glass-dark {
+  @include glass(10px, 0.1);
+}
+
+// ============================================
+// Animations
+// ============================================
+
+.fade-in {
+  @include fade-in;
+}
+
+.slide-in-left {
+  @include slide-in(left);
+}
+
+.slide-in-right {
+  @include slide-in(right);
+}
+
+.slide-in-up {
+  @include slide-in(up);
+}
+
+.slide-in-down {
+  @include slide-in(down);
+}
+
+// ============================================
+// Display Utilities
+// ============================================
+
+.hidden {
+  display: none !important;
+}
+
+.block {
+  display: block !important;
+}
+
+.inline-block {
+  display: inline-block !important;
+}
+
+// ============================================
+// Position Utilities
+// ============================================
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.sticky {
+  position: sticky;
+}
+
+// ============================================
+// Overflow Utilities
+// ============================================
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.overflow-scroll {
+  overflow: scroll;
+}
+
+// ============================================
+// Cursor Utilities
+// ============================================
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+// ============================================
+// Transition Utilities
+// ============================================
+
+.transition-all {
+  transition: $transition-all;
+}
+
+.transition-colors {
+  transition: $transition-colors;
+}
+
+.transition-transform {
+  transition: $transition-transform;
+}
+
+// ============================================
+// Hover Effects
+// ============================================
+
+.hover-lift {
+  transition: $transition-all;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-xl;
+  }
+}
+
+.hover-scale {
+  transition: $transition-transform;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+// ============================================
+// Scrollbar Custom
+// ============================================
+
+.custom-scrollbar {
+  @include scrollbar;
+}

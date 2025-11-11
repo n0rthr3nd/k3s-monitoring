@@ -1,0 +1,208 @@
+// K3S Admin Theme - Color Palette
+// Based on modern gradient design system
+
+// ============================================
+// Brand Colors
+// ============================================
+
+$primary-start: #667eea;
+$primary-end: #764ba2;
+
+$success-start: #43e97b;
+$success-end: #38f9d7;
+
+$warning-start: #fa709a;
+$warning-end: #fee140;
+
+$danger-start: #f5576c;
+$danger-end: #f093fb;
+
+$info-start: #4facfe;
+$info-end: #00f2fe;
+
+// ============================================
+// Gradient Definitions
+// ============================================
+
+$gradient-primary: linear-gradient(135deg, $primary-start 0%, $primary-end 100%);
+$gradient-success: linear-gradient(135deg, $success-start 0%, $success-end 100%);
+$gradient-warning: linear-gradient(135deg, $warning-start 0%, $warning-end 100%);
+$gradient-danger: linear-gradient(135deg, $danger-start 0%, $danger-end 100%);
+$gradient-info: linear-gradient(135deg, $info-start 0%, $info-end 100%);
+
+// Background gradients
+$gradient-bg-light: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+$gradient-bg-dark: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+$gradient-bg-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+// ============================================
+// Neutral Colors
+// ============================================
+
+$gray-50: #f7fafc;
+$gray-100: #edf2f7;
+$gray-200: #e2e8f0;
+$gray-300: #cbd5e0;
+$gray-400: #a0aec0;
+$gray-500: #718096;
+$gray-600: #4a5568;
+$gray-700: #2d3748;
+$gray-800: #1a202c;
+$gray-900: #171923;
+
+$white: #ffffff;
+$black: #000000;
+
+// ============================================
+// Semantic Colors (with transparency)
+// ============================================
+
+// Primary
+$primary-light: rgba($primary-start, 0.1);
+$primary-medium: rgba($primary-start, 0.5);
+$primary-dark: rgba($primary-end, 0.9);
+
+// Success
+$success-light: #c6f6d5;
+$success-dark: #22543d;
+
+// Warning
+$warning-light: #feebc8;
+$warning-dark: #7c2d12;
+
+// Danger
+$danger-light: #fed7d7;
+$danger-dark: #742a2a;
+
+// Info
+$info-light: #bee3f8;
+$info-dark: #2c5282;
+
+// ============================================
+// Text Colors
+// ============================================
+
+$text-primary: $gray-800;
+$text-secondary: $gray-600;
+$text-muted: $gray-500;
+$text-disabled: $gray-400;
+$text-white: $white;
+
+// ============================================
+// Background Colors
+// ============================================
+
+$bg-primary: $white;
+$bg-secondary: $gray-50;
+$bg-tertiary: $gray-100;
+$bg-dark: $gray-800;
+
+// ============================================
+// Border Colors
+// ============================================
+
+$border-light: $gray-200;
+$border-medium: $gray-300;
+$border-dark: $gray-400;
+
+// ============================================
+// Shadow Definitions
+// ============================================
+
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+$shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+// Colored shadows
+$shadow-primary: 0 10px 20px rgba($primary-start, 0.3);
+$shadow-success: 0 10px 20px rgba($success-start, 0.3);
+$shadow-warning: 0 10px 20px rgba($warning-start, 0.3);
+$shadow-danger: 0 10px 20px rgba($danger-start, 0.3);
+$shadow-info: 0 10px 20px rgba($info-start, 0.3);
+
+// ============================================
+// Spacing Scale
+// ============================================
+
+$spacing-xs: 0.25rem;   // 4px
+$spacing-sm: 0.5rem;    // 8px
+$spacing-md: 1rem;      // 16px
+$spacing-lg: 1.5rem;    // 24px
+$spacing-xl: 2rem;      // 32px
+$spacing-2xl: 3rem;     // 48px
+$spacing-3xl: 4rem;     // 64px
+
+// ============================================
+// Border Radius
+// ============================================
+
+$radius-sm: 6px;
+$radius-md: 8px;
+$radius-lg: 10px;
+$radius-xl: 12px;
+$radius-2xl: 16px;
+$radius-full: 9999px;
+
+// ============================================
+// Typography
+// ============================================
+
+$font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+$font-family-mono: 'Courier New', monospace;
+
+$font-size-xs: 0.75rem;    // 12px
+$font-size-sm: 0.875rem;   // 14px
+$font-size-base: 1rem;     // 16px
+$font-size-lg: 1.125rem;   // 18px
+$font-size-xl: 1.25rem;    // 20px
+$font-size-2xl: 1.5rem;    // 24px
+$font-size-3xl: 1.875rem;  // 30px
+$font-size-4xl: 2.25rem;   // 36px
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-extrabold: 800;
+
+$line-height-tight: 1.25;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.75;
+
+// ============================================
+// Z-Index Scale
+// ============================================
+
+$z-dropdown: 1000;
+$z-sticky: 1020;
+$z-fixed: 1030;
+$z-modal-backdrop: 1040;
+$z-modal: 1050;
+$z-popover: 1060;
+$z-tooltip: 1070;
+
+// ============================================
+// Transitions
+// ============================================
+
+$transition-fast: 0.15s ease;
+$transition-base: 0.3s ease;
+$transition-slow: 0.5s ease;
+
+$transition-all: all $transition-base;
+$transition-colors: background-color $transition-base, border-color $transition-base, color $transition-base;
+$transition-transform: transform $transition-base;
+$transition-opacity: opacity $transition-base;
+
+// ============================================
+// Breakpoints
+// ============================================
+
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;

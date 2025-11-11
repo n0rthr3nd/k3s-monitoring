@@ -1,0 +1,327 @@
+// Component Mixins
+@import '../base/colors';
+
+// ============================================
+// Card Mixin
+// ============================================
+
+@mixin card($padding: $spacing-lg, $radius: $radius-2xl, $shadow: $shadow-md) {
+  background: $bg-primary;
+  border-radius: $radius;
+  padding: $padding;
+  box-shadow: $shadow;
+  transition: $transition-all;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-xl;
+  }
+}
+
+@mixin card-header($border-color: $gray-50) {
+  padding: $spacing-lg;
+  border-bottom: 2px solid $border-color;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, rgba($primary-start, 0.05) 0%, rgba($primary-end, 0.05) 100%);
+}
+
+@mixin card-body($padding: $spacing-lg) {
+  padding: $padding;
+}
+
+// ============================================
+// Button Mixin
+// ============================================
+
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-lg;
+  border: none;
+  border-radius: $radius-lg;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+  cursor: pointer;
+  transition: $transition-all;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@mixin button-gradient($gradient, $shadow) {
+  @include button-base;
+  background: $gradient;
+  color: $white;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: $shadow;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+}
+
+@mixin button-primary {
+  @include button-gradient($gradient-primary, $shadow-primary);
+}
+
+@mixin button-success {
+  @include button-gradient($gradient-success, $shadow-success);
+}
+
+@mixin button-warning {
+  @include button-gradient($gradient-warning, $shadow-warning);
+}
+
+@mixin button-danger {
+  @include button-gradient($gradient-danger, $shadow-danger);
+}
+
+@mixin button-info {
+  @include button-gradient($gradient-info, $shadow-info);
+}
+
+@mixin button-outline($color) {
+  @include button-base;
+  background: transparent;
+  color: $color;
+  border: 2px solid $color;
+
+  &:hover:not(:disabled) {
+    background: $color;
+    color: $white;
+  }
+}
+
+// ============================================
+// Badge Mixin
+// ============================================
+
+@mixin badge($bg-gradient, $color: $white) {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-xs $spacing-sm;
+  background: $bg-gradient;
+  color: $color;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  white-space: nowrap;
+}
+
+@mixin badge-primary {
+  @include badge($gradient-primary);
+}
+
+@mixin badge-success {
+  background: $success-light;
+  color: $success-dark;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+}
+
+// ============================================
+// Input Mixin
+// ============================================
+
+@mixin input-base {
+  padding: $spacing-sm $spacing-md;
+  border: 2px solid $border-light;
+  border-radius: $radius-lg;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $text-primary;
+  background: $bg-primary;
+  transition: $transition-colors;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-start;
+    box-shadow: 0 0 0 3px rgba($primary-start, 0.1);
+  }
+
+  &:disabled {
+    background: $gray-100;
+    cursor: not-allowed;
+  }
+
+  &::placeholder {
+    color: $text-muted;
+  }
+}
+
+// ============================================
+// Shadow Mixins
+// ============================================
+
+@mixin shadow-sm {
+  box-shadow: $shadow-sm;
+}
+
+@mixin shadow-md {
+  box-shadow: $shadow-md;
+}
+
+@mixin shadow-lg {
+  box-shadow: $shadow-lg;
+}
+
+@mixin shadow-xl {
+  box-shadow: $shadow-xl;
+}
+
+@mixin shadow-primary {
+  box-shadow: $shadow-primary;
+}
+
+// ============================================
+// Glassmorphism Effect
+// ============================================
+
+@mixin glass($blur: 10px, $opacity: 0.95) {
+  background: rgba($white, $opacity);
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+}
+
+// ============================================
+// Scrollbar Styling
+// ============================================
+
+@mixin scrollbar($width: 10px, $track-color: $gray-100, $thumb-gradient: $gradient-primary) {
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+    border-radius: $radius-lg;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-gradient;
+    border-radius: $radius-lg;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+// ============================================
+// Animations
+// ============================================
+
+@mixin fade-in($duration: 0.5s) {
+  animation: fadeIn $duration ease;
+}
+
+@mixin slide-in($direction: left, $duration: 0.3s) {
+  @if $direction == left {
+    animation: slideInLeft $duration ease;
+  } @else if $direction == right {
+    animation: slideInRight $duration ease;
+  } @else if $direction == up {
+    animation: slideInUp $duration ease;
+  } @else {
+    animation: slideInDown $duration ease;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+// ============================================
+// Responsive Grid
+// ============================================
+
+@mixin grid-auto-fit($min-width: 300px, $gap: $spacing-lg) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($min-width, 1fr));
+  gap: $gap;
+}
+
+@mixin grid-auto-fill($min-width: 300px, $gap: $spacing-lg) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
+  gap: $gap;
+}
+
+// ============================================
+// Flexbox Utilities
+// ============================================
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}

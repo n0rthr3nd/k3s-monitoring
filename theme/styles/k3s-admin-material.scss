@@ -1,0 +1,10 @@
+// ============================================
+// K3S Admin Theme - Angular Material Only
+// ============================================
+// Use this file if you ONLY want Angular Material theming
+// without the custom utility classes
+//
+// In your styles.scss or angular.json:
+// @use 'path/to/theme/styles/k3s-admin-material.scss';
+
+@use 'material/theme';

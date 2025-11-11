@@ -1,0 +1,23 @@
+// K3S Admin Theme - Modular Imports
+// Use this file to import only what you need
+
+// Example usage:
+// @use 'theme/styles/index' with (
+//   $include-utilities: true,
+//   $include-animations: true
+// );
+
+// Base (always included)
+@forward 'base/colors';
+@forward 'base/variables';
+
+// Mixins (always included)
+@forward 'mixins/gradients';
+@forward 'mixins/components';
+@forward 'mixins/responsive';
+
+// Components (optional)
+@forward 'components/utilities';
+
+// Material (use separately if needed)
+// @forward 'material/theme';
