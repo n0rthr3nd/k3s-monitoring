@@ -245,14 +245,14 @@ import { RouterModule, RouterLinkActive } from '@angular/router';
         right: auto;
         background: rgba(102, 126, 234, 0.95);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 1001;
       }
 
       .sidebar:not(.collapsed) .toggle-btn {
-        left: calc(280px - 60px);
+        left: calc(280px - 3rem);
       }
 
       .sidebar.collapsed {
-        width: 0;
         transform: translateX(-100%);
       }
     }
