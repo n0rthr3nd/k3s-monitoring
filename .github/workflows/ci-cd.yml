@@ -3,15 +3,17 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [ "main" ]
+    tags: [ "v*" ]
   workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/k3s-admin
+  IMAGE_NAME: ghcr.io/n0rthr3nd/k3s-admin
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    if: github.event_name != 'push' || github.ref_type != 'branch' || !contains(github.event.head_commit.message, 'release:')
     steps:
       - uses: actions/checkout@v4
       
@@ -36,18 +38,12 @@ jobs:
   build-and-push:
     needs: test
     runs-on: ubuntu-latest
-    outputs:
-      image_tag: ${{ steps.meta.outputs.tags }}
     permissions:
       contents: read
       packages: write
     steps:
       - uses: actions/checkout@v4
       
-      - name: Lowercase IMAGE_NAME
-        run: |
-          echo "IMAGE_NAME=$(echo ${{ env.IMAGE_NAME }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-          
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
@@ -69,6 +65,7 @@ jobs:
           tags: |
             type=sha,format=long
             type=ref,event=branch
+            type=ref,event=tag
             latest
             
       - name: Build and push Docker image
@@ -98,14 +95,12 @@ jobs:
           
           echo "Solicitando sincronización a ArgoCD..."
           
-          # Añadimos --connect-timeout y permitimos que falle sin romper el pipeline
-          # ya que el Image Updater se encargará del despliegue automáticamente.
           curl -k -X POST \
             --connect-timeout 10 \
             --max-time 20 \
             -H "Authorization: Bearer ${ARGOCD_TOKEN}" \
             -H "Content-Type: application/json" \
             "${ARGOCD_SERVER}/api/v1/applications/k3s-monitoring/sync" \
-            -d '{"prune":false,"dryRun":false,"strategy":{"hook":{"force":true}}}' || echo "ArgoCD API no disponible, el Image Updater se encargará de la sincronización."
+            -d '{"prune":false,"dryRun":false,"strategy":{"hook":{"force":true}}}' || echo "ArgoCD API no disponible."
           
           echo "Paso de despliegue finalizado."

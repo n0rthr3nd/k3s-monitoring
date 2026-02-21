@@ -24,6 +24,7 @@ print_success() { echo -e "${BLUE}[SUCCESS]${NC} $1"; }
 IMAGE_NAME="k3s-admin"
 DEPLOYMENT_FILE="k8s/deployment.yaml"
 VERSION_FILE="VERSION"
+REGISTRY_USER="n0rthr3nd"
 
 # Leer versión actual
 if [ ! -f "$VERSION_FILE" ]; then
@@ -109,11 +110,12 @@ print_info "━━━━━━━━━━━━━━━━━━━━━━�
 print_info "Plan de release:"
 print_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "  1. Actualizar VERSION: $CURRENT_VERSION -> $NEW_VERSION"
-echo "  2. Actualizar deployment.yaml: ghcr.io/3kn4ls/${IMAGE_NAME}:v${NEW_VERSION}"
-echo "  3. Commit y push a GitHub"
-echo "  4. GitHub Actions: build multi-arch (~5 min)"
-echo "  5. Push a GHCR (GitHub Container Registry)"
-echo "  6. ArgoCD sync automático"
+echo "  2. Actualizar deployment.yaml: ghcr.io/${REGISTRY_USER}/${IMAGE_NAME}:v${NEW_VERSION}"
+echo "  3. Commit y tag v${NEW_VERSION}"
+echo "  4. Push a GitHub (main + tags)"
+echo "  5. GitHub Actions: build multi-arch (~5 min)"
+echo "  6. Push a GHCR (GitHub Container Registry)"
+echo "  7. ArgoCD sync automático"
 echo ""
 read -p "¿Proceder? (y/n) " -n 1 -r
 echo
@@ -123,23 +125,23 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 fi
 
 # 1. Actualizar archivo VERSION
-print_info "Paso 1/3: Actualizando VERSION..."
+print_info "Paso 1/4: Actualizando VERSION..."
 echo "$NEW_VERSION" > "$VERSION_FILE"
 
 # 2. Actualizar deployment.yaml
-print_info "Paso 2/3: Actualizando deployment.yaml..."
-sed -i "s|image: ghcr.io/3kn4ls/${IMAGE_NAME}:v.*|image: ghcr.io/3kn4ls/${IMAGE_NAME}:v${NEW_VERSION}|g" "$DEPLOYMENT_FILE"
+print_info "Paso 2/4: Actualizando deployment.yaml..."
+sed -i "s|image: ghcr.io/${REGISTRY_USER}/${IMAGE_NAME}:v.*|image: ghcr.io/${REGISTRY_USER}/${IMAGE_NAME}:v${NEW_VERSION}|g" "$DEPLOYMENT_FILE"
 
 # Verificar el cambio
-if grep -q "image: ghcr.io/3kn4ls/${IMAGE_NAME}:v${NEW_VERSION}" "$DEPLOYMENT_FILE"; then
+if grep -q "image: ghcr.io/${REGISTRY_USER}/${IMAGE_NAME}:v${NEW_VERSION}" "$DEPLOYMENT_FILE"; then
     print_info "✓ Deployment actualizado a v${NEW_VERSION}"
 else
     print_error "Error al actualizar deployment.yaml"
     exit 1
 fi
 
-# 3. Commit y push
-print_info "Paso 3/3: Haciendo commit y push a GitHub..."
+# 3. Commit y tag
+print_info "Paso 3/4: Haciendo commit y tag v${NEW_VERSION}..."
 
 git add "$VERSION_FILE" "$DEPLOYMENT_FILE"
 git commit -m "release: v${NEW_VERSION} - ${COMMIT_MESSAGE}
@@ -148,7 +150,13 @@ git commit -m "release: v${NEW_VERSION} - ${COMMIT_MESSAGE}
 
 Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
 
+git tag -a "v${NEW_VERSION}" -m "Release v${NEW_VERSION} - ${COMMIT_MESSAGE}"
+
+# 4. Push
+print_info "Paso 4/4: Haciendo push a GitHub (main y tags)..."
+
 git push origin main
+git push origin --tags
 
 if [ $? -eq 0 ]; then
     echo ""
@@ -156,7 +164,8 @@ if [ $? -eq 0 ]; then
     print_success "✅ Release v${NEW_VERSION} iniciado!"
     print_success "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo ""
-    print_info "📦 Imagen: ghcr.io/3kn4ls/${IMAGE_NAME}:v${NEW_VERSION}"
+    print_info "📦 Imagen: ghcr.io/${REGISTRY_USER}/${IMAGE_NAME}:v${NEW_VERSION}"
+    print_info "🏷️  Tag: v${NEW_VERSION}"
     print_info "🔄 Commit: $(git rev-parse --short HEAD)"
     print_info "📝 Mensaje: ${COMMIT_MESSAGE}"
     echo ""
@@ -164,11 +173,11 @@ if [ $? -eq 0 ]; then
     print_warning "   Esto tomará ~5-6 minutos"
     echo ""
     print_info "📊 Monitorear el progreso:"
-    print_info "   GitHub Actions: https://github.com/3kn4ls/k3s-monitoring/actions"
+    print_info "   GitHub Actions: https://github.com/${REGISTRY_USER}/k3s-monitoring/actions"
     print_info "   ArgoCD: https://northr3nd.duckdns.org/argocd"
     echo ""
     print_info "🔍 Ver estado local:"
-    print_info "   kubectl get pods -l app=k3s-admin -w"
+    print_info "   kubectl get pods -n k3s-admin -l app=k3s-admin -w"
     echo ""
     print_success "🚀 ¡El despliegue se completará automáticamente!"
 else
