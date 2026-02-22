@@ -1,8 +1,8 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { K8sApiService } from '../../services/k8s-api.service';
-import { Pod, Namespace } from '../../models/kubernetes.models';
+import { Pod, Namespace, LogEntry } from '../../models/kubernetes.models';
 
 @Component({
   selector: 'app-pods',
@@ -101,6 +101,66 @@ import { Pod, Namespace } from '../../models/kubernetes.models';
         }
       </div>
     </div>
+
+    <!-- Logs Modal -->
+    @if (showLogsModal()) {
+      <div class="modal-overlay" (click)="closeLogsModal()" id="logs-modal-overlay">
+        <div class="modal-container" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <div class="modal-title-section">
+              <div class="modal-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14 2V8H20M16 13H8M16 17H8M10 9H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="modal-title">Pod Logs</h3>
+                <span class="modal-subtitle">{{ logsPodName() }}</span>
+              </div>
+            </div>
+            <button (click)="closeLogsModal()" class="modal-close-btn" id="logs-modal-close">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="modal-body" #logsContainer>
+            @if (logsLoading()) {
+              <div class="logs-loading">
+                <div class="spinner"></div>
+                <span>Loading logs...</span>
+              </div>
+            } @else if (logEntries().length === 0) {
+              <div class="logs-empty">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+                  <path d="M12 8V12M12 16H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>No logs available for this pod</span>
+              </div>
+            } @else {
+              @for (entry of logEntries(); track $index) {
+                <div class="log-line">
+                  <span class="log-timestamp">{{ entry.timestamp }}</span>
+                  <span class="log-message">{{ entry.message }}</span>
+                </div>
+              }
+            }
+          </div>
+          <div class="modal-footer">
+            <span class="log-count">{{ logEntries().length }} log entries</span>
+            <button (click)="scrollToBottom()" class="scroll-bottom-btn">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Scroll to bottom
+            </button>
+            <button (click)="closeLogsModal()" class="close-btn">Close</button>
+          </div>
+        </div>
+      </div>
+    }
   `,
   styles: [`
     .pods-page {
@@ -387,6 +447,268 @@ import { Pod, Namespace } from '../../models/kubernetes.models';
       margin: 0;
     }
 
+    /* ===== Logs Modal Styles ===== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      animation: overlayFadeIn 0.25s ease;
+      padding: 2rem;
+    }
+
+    @keyframes overlayFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-container {
+      background: #1a1d23;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 900px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      animation: modalSlideIn 0.3s ease;
+      overflow: hidden;
+    }
+
+    @keyframes modalSlideIn {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    }
+
+    .modal-title-section {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .modal-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .modal-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .modal-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin: 0;
+    }
+
+    .modal-subtitle {
+      font-size: 0.8rem;
+      color: #718096;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+      word-break: break-all;
+    }
+
+    .modal-close-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #a0aec0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(245, 87, 108, 0.2);
+      color: #f5576c;
+    }
+
+    .modal-close-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .modal-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem 1.5rem;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+      font-size: 0.8rem;
+      line-height: 1.6;
+      min-height: 200px;
+    }
+
+    /* Custom scrollbar */
+    .modal-body::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .modal-body::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 4px;
+    }
+
+    .modal-body::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 4px;
+    }
+
+    .modal-body::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .log-line {
+      display: flex;
+      gap: 1rem;
+      padding: 0.2rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      transition: background 0.15s ease;
+    }
+
+    .log-line:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .log-timestamp {
+      color: #4facfe;
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      opacity: 0.8;
+    }
+
+    .log-message {
+      color: #cbd5e0;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    .logs-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 3rem;
+      color: #718096;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid rgba(79, 172, 254, 0.15);
+      border-top-color: #4facfe;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .logs-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 3rem;
+      color: #4a5568;
+    }
+
+    .logs-empty svg {
+      width: 48px;
+      height: 48px;
+      color: #2d3748;
+    }
+
+    .modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .log-count {
+      font-size: 0.75rem;
+      color: #4a5568;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+
+    .scroll-bottom-btn {
+      padding: 0.5rem 1rem;
+      background: rgba(79, 172, 254, 0.1);
+      color: #4facfe;
+      border: 1px solid rgba(79, 172, 254, 0.2);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+
+    .scroll-bottom-btn:hover {
+      background: rgba(79, 172, 254, 0.2);
+      border-color: rgba(79, 172, 254, 0.4);
+    }
+
+    .scroll-bottom-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .close-btn {
+      padding: 0.5rem 1.25rem;
+      background: rgba(255, 255, 255, 0.06);
+      color: #a0aec0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .close-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #e2e8f0;
+    }
+
     @media (max-width: 768px) {
       .pods-grid {
         grid-template-columns: 1fr;
@@ -407,19 +729,53 @@ import { Pod, Namespace } from '../../models/kubernetes.models';
         width: 100%;
         justify-content: center;
       }
+
+      .modal-overlay {
+        padding: 1rem;
+      }
+
+      .modal-container {
+        max-height: 90vh;
+      }
+
+      .log-line {
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .modal-footer {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
     }
   `]
 })
-export class PodsComponent implements OnInit {
+export class PodsComponent implements OnInit, AfterViewChecked {
+  @ViewChild('logsContainer') logsContainer!: ElementRef;
+
   private k8sService = inject(K8sApiService);
 
   pods = signal<Pod[]>([]);
   namespaces = signal<Namespace[]>([]);
   selectedNamespace = 'default';
 
+  // Logs modal state
+  showLogsModal = signal(false);
+  logEntries = signal<LogEntry[]>([]);
+  logsLoading = signal(false);
+  logsPodName = signal('');
+  private shouldScrollToBottom = false;
+
   ngOnInit() {
     this.loadNamespaces();
     this.loadPods();
+  }
+
+  ngAfterViewChecked() {
+    if (this.shouldScrollToBottom && this.logsContainer) {
+      this.scrollToBottom();
+      this.shouldScrollToBottom = false;
+    }
   }
 
   loadNamespaces() {
@@ -441,13 +797,35 @@ export class PodsComponent implements OnInit {
   }
 
   viewLogs(pod: Pod) {
+    this.logsPodName.set(pod.name);
+    this.logEntries.set([]);
+    this.logsLoading.set(true);
+    this.showLogsModal.set(true);
+
     this.k8sService.getPodLogs(pod.namespace, pod.name).subscribe({
       next: (logs) => {
-        console.log('Pod logs:', logs);
-        alert(`Logs for ${pod.name}:\n\n${logs.map(l => `[${l.timestamp}] ${l.message}`).join('\n')}`);
+        this.logEntries.set(logs);
+        this.logsLoading.set(false);
+        this.shouldScrollToBottom = true;
       },
-      error: (err) => console.error('Failed to load logs:', err)
+      error: (err) => {
+        console.error('Failed to load logs:', err);
+        this.logsLoading.set(false);
+      }
     });
+  }
+
+  closeLogsModal() {
+    this.showLogsModal.set(false);
+    this.logEntries.set([]);
+    this.logsPodName.set('');
+  }
+
+  scrollToBottom() {
+    if (this.logsContainer) {
+      const el = this.logsContainer.nativeElement;
+      el.scrollTop = el.scrollHeight;
+    }
   }
 
   deletePod(pod: Pod) {
